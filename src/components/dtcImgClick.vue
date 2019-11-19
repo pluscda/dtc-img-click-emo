@@ -1,6 +1,6 @@
 <template>
   <div class="dtc-img-click" ref="dtcImgClick">
-    <div ref="dtcImg" class="dtc-img" :style="{backgroundImage:'url('+ url +')'}"></div>
+    <div ref="dtcImg" class="dtc-img" :style="{backgroundImage:'url('+ dataUrl +')'}"></div>
   </div>
 </template>
 
@@ -8,11 +8,31 @@
 export default {
   name: "dtcClickImgCmp",
   data() {
-    return {};
+    return {
+        dataUrl :'',
+    };
   },
   components: {},
   computed: {},
   methods: {
+    loadImgUrl() {
+        let img = new Image();
+        img.setAttribute("crossOrigin",'anonymous');
+        img.src = this.url + '?' + new Date().getTime();
+        img.onload = () => {
+            let canvas = document.createElement("canvas");
+            let width = img.width;
+            let height = img.height;
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0,0, width, height);
+            this.dataUrl = canvas.toDataURL('image/jpeg');
+            // construct clickable points
+            this.constructPoints();
+        }
+
+    },
+
     constructPoints() {
       if (!this.points) {
         return;
@@ -64,8 +84,8 @@ export default {
     const el = this.$refs.dtcImgClick;
     el.style.setProperty("--width", this.width + "px");
     el.style.setProperty("--height", this.height + "px");
-    // construct clickable points
-    this.constructPoints();
+    this.loadImgUrl();
+   
   },
   beforeDestroy() {},
   watch: {}
