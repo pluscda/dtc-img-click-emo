@@ -11,11 +11,9 @@
   </div>
 </template>
 
-
-
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import DtcImgClick from "../components/dctImgClick";
+import DtcImgClick from "../components/dtcImgClick";
 export default {
   data() {
     return {
@@ -24,7 +22,10 @@ export default {
         width: 400,
         height: 400,
         url: "//unsplash.it/400/400",
-        points: [{ x: 40, y: 64, msg: "1b" }, { x: 140, y: 64, msg: "2" }]
+        points: [
+          { x: 40, y: 64, msg: "1b" },
+          { x: 140, y: 64, msg: "2" }
+        ]
       }
     };
   },
@@ -44,7 +45,6 @@ export default {
   name: "dtcDemo"
 };
 </script>
-
 
 <style lang="scss" scoped>
 .dtc-demo {
@@ -91,4 +91,3 @@ export default {
   }
 }
 </style>
-
