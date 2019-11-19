@@ -68,8 +68,8 @@ export default {
       //step 5 listen for click event for each 2d ctx
       el.onclick = event => {
         for (let i = 0; i < eventList.length; ++i) {
-          const el = eventList[i];
-          if (el.ctx.isPointInPath(el.circle, event.offsetX, event.offsetY)) {
+          const e = eventList[i];
+          if (e.ctx.isPointInPath(e.circle, event.offsetX, event.offsetY)) {
             const msg = this.points[i].msg;
             this.$emit("dtc-img-click", msg);
             break;
