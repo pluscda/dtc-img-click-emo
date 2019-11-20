@@ -1,6 +1,6 @@
 <template>
   <div class="dtc-img-click" ref="dtcImgClick">
-    <div ref="dtcImg" class="dtc-img" :style="{backgroundImage:'url('+ url +')'}"></div>
+    <div ref="dtcImg" class="dtc-img" :style="{backgroundImage:'url('+ dataUrl +')'}"></div>
   </div>
 </template>
 
@@ -8,11 +8,31 @@
 export default {
   name: "dtcClickImgCmp",
   data() {
-    return {};
+    return {
+        dataUrl :'',
+    };
   },
   components: {},
   computed: {},
   methods: {
+    loadImgUrl() {
+        let img = new Image();
+        img.setAttribute("crossOrigin",'anonymous');
+        img.src = this.url + '?' + new Date().getTime();
+        img.onload = () => {
+            let canvas = document.createElement("canvas");
+            let width = img.width;
+            let height = img.height;
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0,0, width, height);
+            this.dataUrl = canvas.toDataURL('image/jpeg');
+            // construct clickable points
+            this.constructPoints();
+        }
+
+    },
+
     constructPoints() {
       if (!this.points) {
         return;
@@ -51,8 +71,8 @@ export default {
       //step 5 listen for click event for each 2d ctx
       el.onclick = event => {
         for (let i = 0; i < eventList.length; ++i) {
-          const el = eventList[i];
-          if (el.ctx.isPointInPath(el.circle, event.offsetX, event.offsetY)) {
+          const e = eventList[i];
+          if (e.ctx.isPointInPath(e.circle, event.offsetX, event.offsetY)) {
             const msg = this.points[i].msg;
             this.$emit("dtc-img-click", msg);
             break;
@@ -67,8 +87,8 @@ export default {
     const el = this.$refs.dtcImgClick;
     el.style.setProperty("--width", this.width + "px");
     el.style.setProperty("--height", this.height + "px");
-    // construct clickable points
-    this.constructPoints();
+    this.loadImgUrl();
+   
   },
   beforeDestroy() {},
   watch: {}
