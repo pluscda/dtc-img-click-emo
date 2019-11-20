@@ -24,7 +24,8 @@ export default {
         url: "//unsplash.it/400/400",
         points: [
           { x: 40, y: 64, msg: "1b" },
-          { x: 140, y: 64, msg: "2" }
+          { x: 140, y: 64, msg: "2" },
+          { x: 140, y: 164, msg: "3" }
         ]
       }
     };

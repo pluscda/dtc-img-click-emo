@@ -22,6 +22,9 @@ export default {
       const img = this.$refs.dtcImg;
       //step 2:  create new canvas element that will have same size of passed in img
       let el = document.createElement("canvas");
+      el.width = this.width;
+      el.height = this.height;
+
       //step 3: append into dom right below the img
       img.append(el);
       //step 4: create 2d context(s) with msg inside
@@ -89,6 +92,8 @@ export default {
     > canvas {
       cursor: pointer !important;
       position: absolute;
+      min-width: var(--width) !important;
+      min-height: var(--height) !important;
       top: 0;
       left: 0;
       right: 0;
