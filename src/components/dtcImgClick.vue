@@ -79,6 +79,26 @@ export default {
           }
         }
       };
+       const elRect = el.getBoundingClientRect();
+       const mainEl = this.$refs.dtcImgClick ; // hold for toggle the cursor
+       //step 6 show cursor when needed
+        el.onmousemove = event => {
+        let cursor = false;
+        for (let i = 0; i < eventList.length; ++i) {
+           const e = eventList[i];
+           const myX = event.clientX - elRect.left;
+           const myY = event.clientY - elRect.top;
+          if (e.ctx.isPointInPath(e.circle, myX, myY)) {
+            mainEl.style.cursor = "pointer";
+            cursor = true;
+            break;
+          }
+        }
+        if (!cursor) {
+            mainEl.style.cursor = "default";
+        }
+      };
+      
     }
   },
   props: ["width", "height", "url", "points"],
@@ -98,7 +118,6 @@ export default {
 
 <style lang="scss" scoped>
 .dtc-img-click {
-  cursor: pointer;
   --width: 0px;
   --height: 0px;
   width: var(--width) !important;
@@ -108,9 +127,7 @@ export default {
     height: var(--height) !important;
     background: transparent no-repeat top left / cover;
     position: relative;
-    cursor: pointer;
     > canvas {
-      cursor: pointer !important;
       position: absolute;
       min-width: var(--width) !important;
       min-height: var(--height) !important;
